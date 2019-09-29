@@ -1,0 +1,47 @@
+{
+  "name": "ali",
+  "version": "1.0.0",
+  "description": "Simple cli snippet tool.",
+  "main": "./src/ali.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/_mocha src/**/*.test.js src/ali.test.js",
+    "test:unit": "./node_modules/mocha/bin/_mocha \"src/**/!(ali).test.js\"",
+    "test:integration": "./node_modules/mocha/bin/_mocha \"src/ali.test.js\"",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha src/**/*.test.js --report lcovonly --"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dirionz/ali.git"
+  },
+  "author": "Christoffer Assgård",
+  "license": "",
+  "bin": {
+    "ali": "./src/ali.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Dirionz/ali/issues"
+  },
+  "homepage": "https://github.com/Dirionz/ali#readme",
+  "dependencies": {
+    "async": "^2.1.4",
+    "child_process": "^1.0.2",
+    "fs": "0.0.1-security",
+    "getos": "^3.1.0",
+    "hashmap": "^2.3.0",
+    "js-yaml": "^3.9.0",
+    "jsonfile": "^2.4.0",
+    "mkdirp": "^0.5.1",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "codecov": "^1.0.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0",
+    "sinon": "^1.17.6",
+    "supertest": "^3.1.0"
+  },
+  "directories": {
+    "test": "test"
+  }
+}

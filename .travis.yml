@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "8"
+install: 
+  - npm install
+  - npm config set registry http://registry.npmjs.org/
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+script:
+  - ./test/scripts/run.sh

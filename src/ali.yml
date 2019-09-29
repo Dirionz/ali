@@ -1,0 +1,14 @@
+---
+zip|z:
+    cmd: zip <filename>.zip <files>
+    description: Install one or more packages with apt.
+echo|e:
+    cmd: echo "<arg1>"
+    description: Echo a message
+git|git:
+    status|s:
+        cmd: git status
+        description: Run git status command
+    commit|c:
+        cmd: git commit -m "<commit>"
+        description: Run git commit command
