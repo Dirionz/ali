@@ -1,7 +1,7 @@
 ---
 zip|z:
-    cmd: zip <filename>.zip <files>
-    description: Install one or more packages with apt.
+    cmd: zip -r <filename>.zip <files>
+    description: Zip recursively
 echo|e:
     cmd: echo "<message>"
     description: Echo a message
@@ -14,4 +14,4 @@ git|git:
           description: Run git status -s command
     commit|c:
         cmd: git commit -m "<commit>"
-        description: Run git commit comman
+        description: Run git commit command
