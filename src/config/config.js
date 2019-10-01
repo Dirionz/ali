@@ -40,6 +40,8 @@ exports.findCommand = (args) => {
         }); 
 
         // FIXME: --help basically return the config.yml + syntax
+        
+        // FIXME: Check if data contains cmd and description at this point.
 
         resolve(data)
         
