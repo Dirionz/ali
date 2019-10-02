@@ -22,11 +22,20 @@ describe('Config', () => {
         })
     });
     it('should return error (missing command)', (done) => {
-        let args = ['echo', 'message']
+        let args = ['echo', 'arg2']
         config.findCommand(args).then(comData => {
             done("Should return an error")
         }).catch(error => {
             expect(error).to.be.equal("Key not found")
+            done()
+        })
+    });
+    it('should return error (missing cmd or desc)', (done) => {
+        let args = ['ls']
+        config.findCommand(args).then(comData => {
+            done("Should return an error")
+        }).catch(error => {
+            expect(error).to.be.equal("Command not found")
             done()
         })
     });

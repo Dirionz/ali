@@ -41,7 +41,9 @@ exports.findCommand = (args) => {
 
         // FIXME: --help basically return the config.yml + syntax
         
-        // FIXME: Check if data contains cmd and description at this point.
+        if (data == null || !data.hasOwnProperty('cmd') || !data.hasOwnProperty('description')) {
+            throw "Command not found"
+        }
 
         resolve(data)
         

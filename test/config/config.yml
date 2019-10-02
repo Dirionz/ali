@@ -5,6 +5,8 @@ zip|z:
 echo|e:
     cmd: echo "<message>"
     description: Echo a message
+ls|l:
+  cmd: ls
 git|git:
     status|s:
         cmd: git status
