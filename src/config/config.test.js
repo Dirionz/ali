@@ -8,7 +8,7 @@ const sinon = require('sinon');
 const chai = require('chai');
 const expect = chai.expect
 
-describe('Config', () => {
+describe('Config findCommand', () => {
     it('should find git status short command', (done) => {
         let args = ['git', 'status', 'short']
         config.findCommand(args).then(comData => {
@@ -37,6 +37,20 @@ describe('Config', () => {
         }).catch(error => {
             expect(error).to.be.equal("Command not found")
             done()
+        })
+    });
+});
+describe('Config helpText', () => {
+    it('should get helptext', (done) => {
+        config.getHelpText().then(helpText => {
+            let split = helpText.split('\n')
+            expect(split[0]).to.be.equal('')
+            expect(split[1]).to.be.equal('usage: ali [Command|Alias] -a [args]')
+            expect(split[2]).to.be.equal('')
+            expect(split.length).to.be.greaterThan(3)
+            done()
+        }).catch(error => {
+            done(error)
         })
     });
 });

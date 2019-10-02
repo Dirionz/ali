@@ -4,7 +4,7 @@ const yaml = require('js-yaml');
 var path = require('path');
 
 exports.findCommand = (args) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         var yml = path.resolve(process.env.HOME+'/.config/ali/config.yml')
         if (process.env.NODE_ENV === 'test') {
             yml = path.resolve('./test/config/config.yml')
@@ -38,8 +38,6 @@ exports.findCommand = (args) => {
             
             data = data[existKey]
         }); 
-
-        // FIXME: --help basically return the config.yml + syntax
         
         if (data == null || !data.hasOwnProperty('cmd') || !data.hasOwnProperty('description')) {
             throw "Command not found"
@@ -48,4 +46,22 @@ exports.findCommand = (args) => {
         resolve(data)
         
     })
+}
+
+exports.getHelpText = () => {
+    return new Promise((resolve) => {
+        var helpText = "\n";
+        helpText += "usage: ali [Command|Alias] -a [args]\n"
+
+        var yml = path.resolve(process.env.HOME+'/.config/ali/config.yml')
+        if (process.env.NODE_ENV === 'test') {
+            yml = path.resolve('./test/config/config.yml')
+        }
+        let file = fs.readFileSync(yml)
+
+        helpText += "\n"
+        helpText += file
+
+        resolve(helpText)
+    });
 }
