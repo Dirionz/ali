@@ -1,10 +1,7 @@
 process.env.NODE_ENV = 'test';
 
-const request = require('supertest');
 const config = require('./config')
 const Command = require('../models/Command')
-const yaml = require('js-yaml');
-const sinon = require('sinon');
 const chai = require('chai');
 const expect = chai.expect
 
