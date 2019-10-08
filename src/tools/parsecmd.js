@@ -1,11 +1,6 @@
 'use strict'
-var path = require("path")
 
-exports.parse = (command, pkgs) => {
-    //let pluginsdir = path.resolve(__dirname, '..') + '/plugins'
-    //console.log(command)
-
-    // FIXME: Anything in between <>
-    return command.replace(/<arg1>/g, pkgs.join(' ').trim())
+exports.parse = (command, args) => {
+    return command.replace(/<\w*>/g, args.join(' ').trim())
                   .replace(/  /g, " ")
 }

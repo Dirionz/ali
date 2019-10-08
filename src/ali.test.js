@@ -1,11 +1,19 @@
-process.env.NODE_ENV = 'test';
-
-const request = require('supertest');
 const cmd = require('./tools/cmd')
-const yaml = require('js-yaml');
-const sinon = require('sinon');
 const chai = require('chai');
 const expect = chai.expect
+
+
+describe('Ali echo command', () => {
+    it('should run echo command', (done) => {
+        cmd.run('./src/ali.js e -a "hello Ali"', function (err, data) {
+            expect(data).not.to.be.null
+            let split = data.split('\n')
+            expect(split[0]).to.equal('Running: echo "hello Ali"')
+            expect(split[1]).to.equal('hello Ali')
+            done()
+        })
+    });
+});
 
 describe('Ali help', () => {
     it('should return help text', (done) => {

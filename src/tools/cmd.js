@@ -50,7 +50,7 @@ function startCommand(command, args, callback) {
 }
 
 function cmd(command, callback) {
-    console.log(command)
+    console.log("Running: "+command)
     const ls = spawn(command, { stdio: 'inherit', shell: true});
 
     ls.on('close', (code) => {
