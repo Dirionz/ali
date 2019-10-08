@@ -40,6 +40,61 @@ describe('Config findCommand', () => {
         })
     });
 });
+describe('Config splitArgs', () => {
+    it('should split args using -a', (done) => {
+        let arg1 = ['something', 'something', '-a', 'arg1', 'arg2']
+        config.splitArgs(arg1).then(args => {
+            expect(args).to.be.an('array').that.is.not.empty;
+            expect(args[0]).to.be.an('array')
+            expect(args[0]).to.include('something')
+            expect(args[0]).to.not.include('-a')
+            expect(args[1]).to.be.an('array')
+            expect(args[1]).to.not.include('-a')
+            expect(args[1]).to.include('arg1')
+            expect(args[1]).to.include('arg2')
+            done()
+        }).catch(error => {
+            done(error)
+        })
+    });
+    it('should split args using --args', (done) => {
+        let arg1 = ['something', 'something', '--args', 'arg1', 'arg2']
+        config.splitArgs(arg1).then(args => {
+            expect(args).to.be.an('array').that.is.not.empty;
+            expect(args[0]).to.be.an('array')
+            expect(args[0]).to.include('something')
+            expect(args[0]).to.not.include('-a')
+            expect(args[1]).to.be.an('array')
+            expect(args[1]).to.not.include('-a')
+            expect(args[1]).to.include('arg1')
+            expect(args[1]).to.include('arg2')
+            done()
+        }).catch(error => {
+            done(error)
+        })
+    });
+    it('should return empty args', (done) => {
+        let arg1 = ['something', 'something']
+        config.splitArgs(arg1).then(args => {
+            expect(args).to.be.an('array').that.is.not.empty;
+            expect(args[0]).to.be.an('array')
+            expect(args[0]).to.include('something')
+            expect(args[0]).to.not.include('-a')
+            done()
+        }).catch(error => {
+            done(error)
+        })
+    });
+    it('should return no args given error', (done) => {
+        let arg1 = ['something', 'something', '-a']
+        config.splitArgs(arg1).then(args => {
+            done("No error given")
+        }).catch(error => {
+            expect(error).to.be.equal('No arguments given')
+            done()
+        })
+    });
+});
 describe('Config helpText', () => {
     it('should get helptext', (done) => {
         config.getHelpText().then(helpText => {

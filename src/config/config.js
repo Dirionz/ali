@@ -12,8 +12,6 @@ exports.findCommand = (args) => {
         let file = fs.readFileSync(yml)
         var data = yaml.safeLoad(file);
 
-        // FIXME: Before this function use -a|--args to split from rest of arguments
-
         args.forEach(function(arg) {
             var existKey = null
             Object.keys(data).forEach(function(key) { 
@@ -46,6 +44,34 @@ exports.findCommand = (args) => {
         resolve(data)
         
     })
+}
+
+exports.splitArgs = (args) => {
+    return new Promise((resolve) => {
+        let path = []
+        let rest = []
+        let before = true
+        args.forEach(function(arg) { 
+            if (arg === '-a' || arg === '--args') {
+                before = false                
+            } else {
+                if (before) {
+                    path.push(arg)
+                } else {
+                    rest.push(arg)
+                }
+            }
+        })
+
+        if (!before && rest.length == 0) {
+            throw "No arguments given"
+        }
+        resolve([path, rest])
+    })
+}
+
+// FIXME: Args same as cmds <>
+exports.validateCommand = () => {
 }
 
 exports.getHelpText = () => {
