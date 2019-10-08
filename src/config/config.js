@@ -70,8 +70,11 @@ exports.splitArgs = (args) => {
     })
 }
 
-// FIXME: Args same as cmds <>
-exports.validateCommand = () => {
+exports.validateCommand = (cmd, args) => {
+    return new Promise((resolve) => {
+        var count = (cmd.match(/<\w*>/g) || []).length;
+        resolve(count === args.length)
+    })
 }
 
 exports.getHelpText = () => {

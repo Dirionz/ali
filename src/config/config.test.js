@@ -95,6 +95,24 @@ describe('Config splitArgs', () => {
         })
     });
 });
+describe('Config validateCommand', () => {
+    it('should validate command sucessfully', (done) => {
+        config.validateCommand('zip -r <filename>.zip <files>', ['arg1', 'arg2']).then(valid => {
+            expect(valid).to.be.true
+            done()
+        }).catch(error => {
+            done(error)
+        })
+    });
+    it('should validate command with empty args sucessfully', (done) => {
+        config.validateCommand('git status', []).then(valid => {
+            expect(valid).to.be.true
+            done()
+        }).catch(error => {
+            done(error)
+        })
+    });
+});
 describe('Config helpText', () => {
     it('should get helptext', (done) => {
         config.getHelpText().then(helpText => {
