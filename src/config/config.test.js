@@ -2,6 +2,8 @@ process.env.NODE_ENV = 'test';
 
 const config = require('./config')
 const Command = require('../models/Command')
+const fs = require('fs')
+const sinon = require('sinon')
 const chai = require('chai');
 const expect = chai.expect
 
@@ -124,3 +126,43 @@ describe('Config helpText', () => {
         })
     });
 });
+describe('Config generateZshCompletions', () => {
+    it('should generate zsh completions file', (done) => {
+        let writeFileSync = sinon.stub(fs, 'writeFileSync').returns({});
+        let appendFileSync = sinon.stub(fs, 'appendFileSync').returns({});
+        config.generateZshCompetions().then(() => {
+            expect(writeFileSync.firstCall.args[1]).to.be.equal('#compdef _ali ali')
+            expect(appendFileSync.getCall(1).args[1]).to.be.equal('\nfunction _ali {')
+            expect(appendFileSync.getCall(6).args[1]).to.be.equal('\n\tcase $state in')
+            expect(appendFileSync.getCall(11).args[1]).to.be.equal('\n\t\tlevel2)')
+            expect(appendFileSync.getCall(15).args[1]).to.be.equal('\n\t\tlevel3)')
+            expect(appendFileSync.getCall(18).args[1]).to.be.equal('\n\tesac')
+            done()
+        }).catch(error => {
+            done(error)
+        })
+
+        writeFileSync.restore()
+    });
+});
+// describe('Config shouldGenerateCompletions', () => {
+//     it('should return true', (done) => {
+//         // Mock this do it finds file here
+//         let readFileSync = sinon.stub(fs, 'readFileSync').returns({});
+//         config.shouldGenerateCompletions().then(result => {
+//             expect(result).to.be.true
+//             done()
+//         }).catch(error => {
+//             done(error)
+//         })
+//     });
+//     it('should return false', (done) => {
+//         config.shouldGenerateCompletions().then(result => {
+//             // Mock this so that it do not find a file here. 
+//             expect(result).to.be.false
+//             done()
+//         }).catch(error => {
+//             done(error)
+//         })
+//     });
+// });

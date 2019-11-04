@@ -1,0 +1,21 @@
+#compdef _ali ali
+
+function _ali {
+	local state
+
+	_arguments '1: :->level1' '2: :->level2' '3: :->level3'
+
+	case $state in
+		level1)
+			_describe 'comand' "('zip|z:zip -r <filename>.zip <files>')"
+			_describe 'comand' "('echo|e:echo "<message>"')"
+		;;
+		level2)
+			_describe 'comand' "('status|s:git status')"
+			_describe 'comand' "('commit|c:git commit -m "<commit>"')"
+		;;
+		level3)
+			_describe 'comand' "('short|s:git status -s')"
+		;;
+	esac
+}
