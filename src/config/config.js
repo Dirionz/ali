@@ -95,10 +95,9 @@ exports.getHelpText = () => {
     });
 }
 
-// TODO: Have a timestamp file to check if we need to update completions.
 exports.generateZshCompetions = () => {
     return new Promise((resolve) => {
-        var ali = path.resolve(process.env.HOME+'/.config/ali/config.yml')
+        var ali = path.resolve(process.env.HOME+'/.config/ali/_ali')
         if (process.env.NODE_ENV === 'test') {
             ali = path.resolve('./test/config/_ali')
         }
@@ -177,3 +176,32 @@ function addLevels(levels, data, level) {
         addLevels(levels, d, level)
     })
 }
+
+exports.shouldGenerateZshCompletions = () => {
+    return new Promise((resolve) => {
+        var ali = path.resolve(process.env.HOME+'/.config/ali/_ali')
+        if (process.env.NODE_ENV === 'test') {
+            ali = path.resolve('./test/config/_ali')
+        }
+        var yml = path.resolve(process.env.HOME+'/.config/ali/config.yml')
+        if (process.env.NODE_ENV === 'test') {
+            yml = path.resolve('./test/config/config.yml')
+        }
+
+        fs.access(ali, fs.F_OK, (err) => {
+            if (err) {
+                resolve(true)
+            }
+          
+            let alitime = getFileUpdatedDate(ali)
+            let ymltime = getFileUpdatedDate(yml)
+
+            resolve(ymltime > alitime)
+          })
+    });
+}
+
+function getFileUpdatedDate(path) {
+    const stats = fs.statSync(path)
+    return stats.mtime
+  }

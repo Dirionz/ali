@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 const config = require('./config')
 const Command = require('../models/Command')
 const fs = require('fs')
+const path = require('path');
 const sinon = require('sinon')
 const chai = require('chai');
 const expect = chai.expect
@@ -127,9 +128,11 @@ describe('Config helpText', () => {
     });
 });
 describe('Config generateZshCompletions', () => {
+    var writeFileSync = undefined
+    var appendFileSync = undefined
     it('should generate zsh completions file', (done) => {
-        let writeFileSync = sinon.stub(fs, 'writeFileSync').returns({});
-        let appendFileSync = sinon.stub(fs, 'appendFileSync').returns({});
+        writeFileSync = sinon.stub(fs, 'writeFileSync').returns({});
+        appendFileSync = sinon.stub(fs, 'appendFileSync').returns({});
         config.generateZshCompetions().then(() => {
             expect(writeFileSync.firstCall.args[1]).to.be.equal('#compdef _ali ali')
             expect(appendFileSync.getCall(1).args[1]).to.be.equal('\nfunction _ali {')
@@ -141,28 +144,42 @@ describe('Config generateZshCompletions', () => {
         }).catch(error => {
             done(error)
         })
-
-        writeFileSync.restore()
     });
+    afterEach(() => {
+        writeFileSync.restore()
+        appendFileSync.restore()
+    })
 });
-// describe('Config shouldGenerateCompletions', () => {
-//     it('should return true', (done) => {
-//         // Mock this do it finds file here
-//         let readFileSync = sinon.stub(fs, 'readFileSync').returns({});
-//         config.shouldGenerateCompletions().then(result => {
-//             expect(result).to.be.true
-//             done()
-//         }).catch(error => {
-//             done(error)
-//         })
-//     });
-//     it('should return false', (done) => {
-//         config.shouldGenerateCompletions().then(result => {
-//             // Mock this so that it do not find a file here. 
-//             expect(result).to.be.false
-//             done()
-//         }).catch(error => {
-//             done(error)
-//         })
-//     });
-// });
+describe('Config shouldZshGenerateCompletions', () => {
+    var statSync = undefined
+    it('should return true', (done) => {
+        statSync = sinon.stub(fs, 'statSync')
+        statSync.onCall(0).returns({ mtime: 0 })
+        statSync.onCall(1).returns({ mtime: 1 })
+        config.shouldGenerateZshCompletions().then(result => {
+            expect(statSync).to.be.called
+            expect(result).to.be.true
+            done()
+        }).catch(error => {
+            done(error)
+        })
+    });
+    it('should return false', (done) => {
+        statSync = sinon.stub(fs, 'statSync')
+        statSync.onCall(0).returns({ mtime: 1 })
+        statSync.onCall(1).returns({ mtime: 0 })
+        config.shouldGenerateZshCompletions().then(result => {
+            expect(statSync).to.be.called
+            expect(result).to.be.false
+            done()
+            statSync.restore()
+        }).catch(error => {
+            done(error)
+            statSync.restore()
+        })
+
+    });
+    afterEach(() => {
+        statSync.restore()
+    })
+});
