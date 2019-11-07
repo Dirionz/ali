@@ -58,6 +58,10 @@ async function handleCommand(args) {
         let data = await config.findCommand(pathArgs[0])
         let command = Object.assign(new Command(), data);
 
+        if (await config.shouldGenerateZshCompletions()) {
+            await config.generateZshCompetions()
+        }
+
         if (await config.validateCommand(command.cmd, pathArgs[1])) {
             const res = await commander.cmd(parsecmd.parse(command.cmd, pathArgs[1]))
             resolve()
